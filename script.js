@@ -185,6 +185,10 @@ window.onload = function() {
             {
                 this.ankimo.fishup();
             }
+            else if(this.state == GameScene.STATE.LEAVEABLE)
+            {
+                game.replaceScene(new TitleScene());
+            }
 		},
         onenterframe: function(){
             switch (this.state) {
@@ -219,19 +223,17 @@ window.onload = function() {
                     }
                     break;
                 case GameScene.STATE.CLOSING:
-                    
+                    this.tl.delay(2 * GAME_FPS).then(function(){
+                        this.state = GameScene.STATE.LEAVEABLE;
+                    });
                     break;
-            
+                case GameScene.STATE.LEAVEABLE:
                 default:
                     break;
             }
-
-            if(this.state == GameScene.STATE.PLAYING)
-            {
-            }
         },
     });
-    GameScene.STATE = { OPENING : 0, PLAYING : 1, CLOSING : 2 };
+    GameScene.STATE = { OPENING : 0, PLAYING : 1, CLOSING : 2, LEAVEABLE : 3, };
 
     var Wave = Class.create(Sprite,{
         initialize: function(){
