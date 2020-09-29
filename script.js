@@ -66,9 +66,6 @@ window.onload = function() {
 			title.moveTo((GAME_WIDTH - title.width) / 2, (GAME_HEIGHT - title.height) / 2);
             this.addChild(title);
 
-            let ankimo = new Ankimo();
-            this.addChild(ankimo);
-
         },
 		ontouchend: function(param){
 			game.replaceScene(new GameScene());
@@ -452,11 +449,11 @@ window.onload = function() {
                 else if(this.rod.state == Rod.STATE.ROLLED_UP)
                 {
                     switch (this.no) {
-                        case 0: this.moveTo(100, 100); this.rotation = 30; break;
-                        case 1: this.moveTo(100, 100); this.rotation =-30; break;
-                        case 2: this.moveTo(  0, 100); this.rotation = 90; break;
-                        case 3: this.moveTo(  0, 100); this.rotation =-45; break;
-                        case 4: this.moveTo(  0, 100); this.rotation =-90; break;
+                        case 0: this.moveTo(208, 130); this.rotation =  0; break;
+                        case 1: this.moveTo(200, 110); this.rotation =-15; break;
+                        case 2: this.moveTo(190,  80); this.rotation =-32; break;
+                        case 3: this.moveTo(180,  60); this.rotation =-20; break;
+                        case 4: this.moveTo(165,  40); this.rotation =-55; break;
                     };
                 }
             }
