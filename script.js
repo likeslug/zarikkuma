@@ -195,9 +195,9 @@ window.onload = function() {
                         }
                         else
                         {
-                            if(this.age % 90 == 1){
+                            if(this.age % 30 == 1){
                                 let zari = new Zari3();
-                                zari.moveTo(100, 400);
+                                zari.moveTo(-zari.width, 400);
                                 this.insertBefore(zari, this.wave);
                             }
                         }
@@ -491,21 +491,23 @@ window.onload = function() {
             this.image = game.assets[image];
             this.originX = originX;
             this.originY = originY;
-            this.speedX = speedX;
+            this.abs_speedX = speedX;
+            this.direction = 1;
             this.frame = (Array(4).fill(0)).concat(Array(4).fill(1));
             this.point = point;
             this.active = true;
         },
         onenterframe: function(){
             if(this.active){
-                if(this.x <= 0){
+                let direction = 1;
+                if(this.x + this.width / 2 <= 0 && this.direction < 0){
+                    this.direction = 1;
                     this.scaleX = 1;
-                    this.speedX *= -1;
-                }else if(this.x + this.width >= GAME_WIDTH){
+                }else if(this.x + this.width / 2 >= GAME_WIDTH && this.direction > 0){
+                    this.direction = -1;
                     this.scaleX = -1;
-                    this.speedX *= -1;
                 }
-                this.x += this.speedX;
+                this.x += this.direction * this.abs_speedX;
             }
         },
         fish: function(){
