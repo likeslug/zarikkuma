@@ -61,10 +61,25 @@ window.onload = function() {
             bg.moveTo(0, 0);
             this.addChild(bg);
 
+            let zarigani = new Sprite(202, 152);
+            zarigani.image = game.assets[IMG_ZARI0];
+            zarigani.moveTo(600, 330);
+            this.addChild(zarigani);
+
             let title = new Sprite(560, 178);
             title.image = game.assets[IMG_TITLE];
 			title.moveTo((GAME_WIDTH - title.width) / 2, (GAME_HEIGHT - title.height) / 2);
             this.addChild(title);
+
+            let ankimo = new Ankimo();
+            ankimo.state = Ankimo.STATE.STOP;
+            ankimo.rod.string.scaleY = 35;
+            ankimo.moveTo(440, 125);
+            this.addChild(ankimo);
+
+            let message = new OutlineLabel('click/tap to start!', GAME_WIDTH, 50, 'black', 'white', undefined, 'center');
+            message.moveTo(0, 450);
+            this.addChild(message);
 
         },
 		ontouchend: function(param){
@@ -296,6 +311,8 @@ window.onload = function() {
                     this.state = Ankimo.STATE.RAISING;
                 case Ankimo.STATE.RAISING:
                     break;
+                case Ankimo.STATE.STOP:
+                    break;
             }
         },
         fishup: function(){
@@ -323,6 +340,7 @@ window.onload = function() {
         WAITING             : 1,
         RAISING_INIT        : 2,
         RAISING             : 3,
+        STOP                : 4,
     };
 
     var Rod = Class.create(Group,{
