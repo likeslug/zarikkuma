@@ -31,7 +31,7 @@ window.onload = function() {
     const IMG_TAIRYO_RYO = 'image/textimg_tairyo(ryo).png';
     const IMG_RESULT_FRAME = 'image/result_frame.png';
     const IMG_TIMER_ICON = 'image/timer_icon.png';
-    const IMG_VE = 'image/ve_baloon.png';
+    const IMG_VE = 'image/ve_balloon.png';
 
     var game = new Core(GAME_WIDTH, GAME_HEIGHT);
 	game.fps = GAME_FPS;
@@ -146,7 +146,7 @@ window.onload = function() {
             this.point_label.addPoint(this.point, this.point + got_point);
             this.point += got_point;
             if(got_zari_count == 0){
-
+                this.ankimo.disappoint();
             }
             else if(this.ankimo.rod.mame_count < GAME_MAME_MAX && got_zari_count == this.ankimo.rod.mame_count){
                 let tairyo = TairyoEffect();
@@ -195,7 +195,7 @@ window.onload = function() {
                         }
                         else
                         {
-                            if(this.age % 10 == 1){
+                            if(this.age % 90 == 1){
                                 let zari = new Zari3();
                                 zari.moveTo(100, 400);
                                 this.insertBefore(zari, this.wave);
@@ -275,6 +275,7 @@ window.onload = function() {
             switch (this.state) {
                 case Ankimo.STATE.WAITING_INIT:
                 default:
+                    this.body.frame = 0;
                     this.body.tl.clear();
                     this.body.rotation = 0;
                     this.rod.rotation = 0;
@@ -289,7 +290,7 @@ window.onload = function() {
                     this.body.tl.rotateTo(-5, 10).delay(30).then(function(){
                         this.parentNode.state = Ankimo.STATE.WAITING_INIT;
                     });
-                    //this.rod.tl.rotateTo(-10, 10);
+                    this.rod.tl.rotateTo(-10, 10);
                     this.lhand.tl.rotateTo(-20, 10);
                     this.rhand.tl.rotateTo(-10, 10);
                     this.state = Ankimo.STATE.RAISING;
@@ -306,6 +307,16 @@ window.onload = function() {
                 this.state = Ankimo.STATE.RAISING_INIT;
             }
         },
+        disappoint: function(){
+            this.body.frame = 1;
+            this.ve_balloon = new Sprite(71, 64);
+            this.ve_balloon.image = game.assets[IMG_VE];
+            this.ve_balloon.moveTo(-this.ve_balloon.width - 10, -20);
+            this.ve_balloon.on('enterframe', function(){
+                if(this.parentNode.state == Ankimo.STATE.WAITING_INIT || this.parentNode.state == Ankimo.STATE.WAITING) this.parentNode.removeChild(this);
+            });
+            this.addChild(this.ve_balloon);
+        }
     });
     Ankimo.STATE = {
         WAITING_INIT        : 0,
@@ -519,7 +530,7 @@ window.onload = function() {
     });
     var Zari3 = Class.create(ZariBase,{
         initialize: function(){
-            ZariBase.call(this, 115, 110, IMG_ZARI3, 79, 53, 30, 100000)
+            ZariBase.call(this, 115, 110, IMG_ZARI3, 79, 53, 5, 100000)
         }
     });
 
