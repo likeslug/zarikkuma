@@ -860,7 +860,25 @@ window.onload = function() {
         },
     });
 
-
+	function resizeStage() {
+		var core = enchant.Core.instance;
+		core.scale = Math.min(window.innerWidth / GAME_WIDTH, window.innerHeight / GAME_HEIGHT);
+		var stagePos = {
+			top: (window.innerHeight - (core.height * core.scale)) / 2,
+			left: (window.innerWidth - (core.width * core.scale)) / 2,
+		};
+		var stage = document.getElementById('enchant-stage');
+		stage.style.position = 'absolute';
+		stage.style.top = stagePos.top + 'px';
+		stage.style.left = stagePos.left + 'px';
+		core._pageX = stagePos.left;
+		core._pageY = stagePos.top;
+	}
+	window.onresize = function() {
+		resizeStage();
+	};
+    resizeStage();
+    
     game.onload = function() {
 		var titleScene = new TitleScene();
 		game.pushScene(titleScene);
