@@ -217,7 +217,7 @@ window.onload = function() {
                             // ザリガニ生成ルール
                             const MIN_ZARIGANI_COUNT = 3;
                             const MAX_ZARIGANI_COUNT = 8;
-                            const ZARI_GENERATE_RATE = 30; // [frame/gen]
+                            const ZARI_GENERATE_RATE = 15; // [frame/gen]
                             let living_zari_count = ZariBase.collection.length;
                             if(living_zari_count < MAX_ZARIGANI_COUNT)
                             {
