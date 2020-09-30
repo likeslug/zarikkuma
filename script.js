@@ -581,7 +581,7 @@ window.onload = function() {
     });
     var Zari0 = Class.create(ZariBase,{
         initialize: function(){
-            ZariBase.call(this, 121, 91, IMG_ZARI0, 78, 29, 10, 1000);
+            ZariBase.call(this, 121, 91, IMG_ZARI0, 78, 29, 5, 1000);
         }
     });
     var Zari1 = Class.create(ZariBase,{
