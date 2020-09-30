@@ -61,9 +61,11 @@ window.onload = function() {
             bg.moveTo(0, 0);
             this.addChild(bg);
 
-            let zarigani = new Sprite(121, 91);
-            zarigani.image = game.assets[IMG_ZARI0];
-            zarigani.moveTo(620, 370);
+            let zarigani = new Sprite(115, 110);
+            zarigani.image = game.assets[IMG_ZARI3];
+            zarigani.moveTo(620, 360);
+            zarigani.scaleX = -0.8;
+            zarigani.scaleY = 0.8;
             this.addChild(zarigani);
 
             let title = new Sprite(560, 178);
