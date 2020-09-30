@@ -7,7 +7,7 @@ window.onload = function() {
     const GAME_HEIGHT = 540;
     const GAME_FPS = 30;
     const GAME_MAME_MAX = 5;
-    const GAME_TIME = 30;
+    const GAME_TIME = 30; // [sec]
     const IMG_TEST = 'image/pattern64.png';
     const IMG_BACKGROUND = 'image/background.png';
     const IMG_TITLE = 'image/title.png';
@@ -21,7 +21,7 @@ window.onload = function() {
     const IMG_STRING = 'image/string.png';
     const IMG_CURVED_STRING = 'image/curved_string.png';
     const IMG_MAME = 'image/mame.png';
-    const IMG_ZARI0 = 'image/zarigani0(202x152).png';
+    const IMG_ZARI0 = 'image/zarigani0(121x91).png';
     const IMG_ZARI1 = 'image/zarigani1(140x117).png';
     const IMG_ZARI2 = 'image/zarigani2(148x126).png';
     const IMG_ZARI3 = 'image/zarigani3(115x110).png';
@@ -61,11 +61,9 @@ window.onload = function() {
             bg.moveTo(0, 0);
             this.addChild(bg);
 
-            let zarigani = new Sprite(202, 152);
+            let zarigani = new Sprite(121, 91);
             zarigani.image = game.assets[IMG_ZARI0];
-            zarigani.scaleX = -0.8;
-            zarigani.scaleY = 0.8;
-            zarigani.moveTo(600, 320);
+            zarigani.moveTo(620, 370);
             this.addChild(zarigani);
 
             let title = new Sprite(560, 178);
@@ -226,10 +224,10 @@ window.onload = function() {
                                 if(living_zari_count < MIN_ZARIGANI_COUNT || Math.random() <= 1 / ZARI_GENERATE_RATE)
                                 {
                                     let zari_gen_weight = [];
-                                    zari_gen_weight[0] = 1;
-                                    zari_gen_weight[1] = 1;
-                                    zari_gen_weight[2] = 1;
-                                    zari_gen_weight[3] = 1;
+                                    zari_gen_weight[0] = (remain_sec > 25)? 1 : 0;
+                                    zari_gen_weight[1] = (remain_sec <= 25)? 1 : 0;
+                                    zari_gen_weight[2] = (remain_sec <= 20)? 1 : 0;
+                                    zari_gen_weight[3] = (remain_sec <= 15)? 2 : 0;
                                     let total_weight = 0;
                                     for (const w of zari_gen_weight) { total_weight += w; }
 
@@ -583,22 +581,22 @@ window.onload = function() {
     });
     var Zari0 = Class.create(ZariBase,{
         initialize: function(){
-            ZariBase.call(this, 202, 152, IMG_ZARI0, 135, 52, 5, 100)
+            ZariBase.call(this, 121, 91, IMG_ZARI0, 78, 29, 10, 1000);
         }
     });
     var Zari1 = Class.create(ZariBase,{
         initialize: function(){
-            ZariBase.call(this, 140, 117, IMG_ZARI1, 105, 40, 10, 2500)
+            ZariBase.call(this, 140, 117, IMG_ZARI1, 105, 40, 12, 5000);
         }
     });
     var Zari2 = Class.create(ZariBase,{
         initialize: function(){
-            ZariBase.call(this, 148, 126, IMG_ZARI2, 97, 52, 15, 5000)
+            ZariBase.call(this, 148, 126, IMG_ZARI2, 97, 52, 5, 10000);
         }
     });
     var Zari3 = Class.create(ZariBase,{
         initialize: function(){
-            ZariBase.call(this, 115, 110, IMG_ZARI3, 79, 53, 5, 100000)
+            ZariBase.call(this, 115, 110, IMG_ZARI3, 79, 53, 15, 50000);
         }
     });
 
