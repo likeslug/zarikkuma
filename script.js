@@ -63,7 +63,9 @@ window.onload = function() {
 
             let zarigani = new Sprite(202, 152);
             zarigani.image = game.assets[IMG_ZARI0];
-            zarigani.moveTo(600, 330);
+            zarigani.scaleX = -0.8;
+            zarigani.scaleY = 0.8;
+            zarigani.moveTo(600, 320);
             this.addChild(zarigani);
 
             let title = new Sprite(560, 178);
@@ -77,7 +79,7 @@ window.onload = function() {
             ankimo.moveTo(440, 125);
             this.addChild(ankimo);
 
-            let message = new OutlineLabel('click/tap to start!', GAME_WIDTH, 50, 'black', 'white', undefined, 'center');
+            let message = new OutlineLabel('tap to start!', GAME_WIDTH, 50, 'black', 'white', undefined, 'center');
             message.moveTo(0, 450);
             this.addChild(message);
 
@@ -214,10 +216,54 @@ window.onload = function() {
                         }
                         else
                         {
-                            if(this.age % 30 == 1){
-                                let zari = new Zari3();
-                                zari.moveTo(-zari.width, 400);
-                                this.insertBefore(zari, this.wave);
+                            // ザリガニ生成ルール
+                            const MIN_ZARIGANI_COUNT = 3;
+                            const MAX_ZARIGANI_COUNT = 8;
+                            const ZARI_GENERATE_RATE = 30; // [frame/gen]
+                            let living_zari_count = ZariBase.collection.length;
+                            if(living_zari_count < MAX_ZARIGANI_COUNT)
+                            {
+                                if(living_zari_count < MIN_ZARIGANI_COUNT || Math.random() <= 1 / ZARI_GENERATE_RATE)
+                                {
+                                    let zari_gen_weight = [];
+                                    zari_gen_weight[0] = 1;
+                                    zari_gen_weight[1] = 1;
+                                    zari_gen_weight[2] = 1;
+                                    zari_gen_weight[3] = 1;
+                                    let total_weight = 0;
+                                    for (const w of zari_gen_weight) { total_weight += w; }
+
+                                    let zari_type = 0;
+                                    let type_random = Math.random();
+                                    let cumulate_weight = 0;
+                                    for (zari_type = 0; zari_type < zari_gen_weight.length; zari_type++){
+                                        cumulate_weight += zari_gen_weight[zari_type];
+                                        if(type_random < cumulate_weight / total_weight) break;
+                                    }
+
+                                    const WAVE_Y = 250;
+                                    let zari_entity;
+                                    switch (zari_type) {
+                                        default:
+                                        case 0:
+                                            zari_entity = new Zari0();
+                                            zari_entity.moveTo(-zari_entity.width, WAVE_Y + Math.random() * (GAME_HEIGHT - WAVE_Y - zari_entity.height));
+                                            break;
+                                        case 1:
+                                            zari_entity = new Zari1();
+                                            zari_entity.moveTo(-zari_entity.width, WAVE_Y + Math.random() * (GAME_HEIGHT - WAVE_Y - zari_entity.height));
+                                            break;
+                                        case 2:
+                                            zari_entity = new Zari2();
+                                            zari_entity.moveTo(-zari_entity.width, GAME_HEIGHT - zari_entity.height + 5);
+                                            break;
+                                        case 3:
+                                            zari_entity = new Zari3();
+                                            zari_entity.moveTo(-zari_entity.width, WAVE_Y + Math.random() * (GAME_HEIGHT - WAVE_Y - zari_entity.height));
+                                            break;
+                                    }
+                                    this.insertBefore(zari_entity, this.wave);
+                                }
                             }
                         }
                     }
@@ -537,12 +583,12 @@ window.onload = function() {
     });
     var Zari0 = Class.create(ZariBase,{
         initialize: function(){
-            ZariBase.call(this, 202, 152, IMG_ZARI0, 187, 120, 5, 100)
+            ZariBase.call(this, 202, 152, IMG_ZARI0, 135, 52, 5, 100)
         }
     });
     var Zari1 = Class.create(ZariBase,{
         initialize: function(){
-            ZariBase.call(this, 140, 117, IMG_ZARI1, 127, 82, 10, 2500)
+            ZariBase.call(this, 140, 117, IMG_ZARI1, 105, 40, 10, 2500)
         }
     });
     var Zari2 = Class.create(ZariBase,{
