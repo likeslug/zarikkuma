@@ -1,6 +1,23 @@
 window.focus();
 enchant();
 
+let userAgent = window.navigator.userAgent.toLowerCase();
+let browser_type = "";
+if(userAgent.indexOf('msie') != -1 || userAgent.indexOf('trident') != -1) {
+    browser_type = "ie";
+} else if(userAgent.indexOf('edge') != -1) {
+    browser_type = "eg";
+} else if(userAgent.indexOf('chrome') != -1) {
+    browser_type = "ch";
+} else if(userAgent.indexOf('safari') != -1) {
+    browser_type = "sf";
+} else if(userAgent.indexOf('firefox') != -1) {
+    browser_type = "fx";
+} else if(userAgent.indexOf('opera') != -1) {
+    browser_type = "op";
+}
+//console.log(browser_type);
+
 window.onload = function() {
 
     const GAME_WIDTH = 960;
