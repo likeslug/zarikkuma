@@ -7,7 +7,7 @@ window.onload = function() {
     const GAME_HEIGHT = 540;
     const GAME_FPS = 30;
     const GAME_MAME_MAX = 5;
-    const GAME_TIME = 30; // [sec]
+    const GAME_TIME = 5; // [sec]
     const IMG_TEST = 'image/pattern64.png';
     const IMG_BACKGROUND = 'image/background.png';
     const IMG_TITLE = 'image/title.png';
@@ -189,6 +189,10 @@ window.onload = function() {
             }
             else if(this.state == GameScene.STATE.LEAVEABLE)
             {
+                let remain_zaris = ZariBase.collection;
+                for(let i = remain_zaris.length - 1; i >= 0; i--){
+                    remain_zaris[i].parentNode.removeChild(remain_zaris[i]);
+                }
                 game.replaceScene(new TitleScene());
             }
 		},
