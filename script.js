@@ -17,6 +17,8 @@ if(userAgent.indexOf('msie') != -1 || userAgent.indexOf('trident') != -1) {
     browser_type = "op";
 }
 //console.log(browser_type);
+function text_actualY(virtualY, font_size){ return (virtualY - (browser_type == "sf"? font_size / 3.8 : 0)); } // TODO: magic number
+function text_virtualY(actualY, font_size){ return (actualY + (browser_type == "sf"? font_size / 3.8 : 0)); }
 
 window.onload = function() {
 
@@ -628,6 +630,7 @@ window.onload = function() {
             Group.call(this);
             this.BG_SHIFT_COUNT = 16;
             this.BG_SHIFT_PIX = size_px / 10;
+            this.font_size = size_px;
             let font = "800 " + size_px + "px 'Nunito', sans-serif";
             
             this.bg2_labels = [];
@@ -676,6 +679,19 @@ window.onload = function() {
         },
         setFgColor: function(color){
             this.fg_label.color = color;
+        },
+        y: {
+            // あまりよくない… 
+            get: function() {
+                return text_virtualY(this._y, this.font_size);
+            },
+            set: function(y) {
+                y = text_actualY(y, this.font_size);
+                if(this._y !== y) {
+                    this._y = y;
+                    this._dirty = true;
+                }
+            }
         },
         opacity: {
             get: function() {
@@ -843,19 +859,11 @@ window.onload = function() {
             this.bg_frame.moveTo(0, 0);
             this.addChild(this.bg_frame);
 
-            this.score_text = new Label('SCORE');
-            this.score_text.font = "800 54px 'Nunito', sans-serif";;
-            this.score_text.color = 'black';
-            this.score_text.textAlign = 'center';
-            this.score_text.width = this.bg_frame.width;
+            this.score_text = new OutlineLabel('SCORE', this.bg_frame.width, 54, 'black', 'white', undefined, 'center');
             this.score_text.moveTo(0, 25);
             this.addChild(this.score_text);
             
-            this.pt_text = new Label('pt');
-            this.pt_text.font = "800 65px 'Nunito', sans-serif";;
-            this.pt_text.color = 'black';
-            this.pt_text.textAlign = 'right';
-            this.pt_text.width = this.bg_frame.width;
+            this.pt_text = new OutlineLabel('pt', this.bg_frame.width, 65, 'black', 'white', undefined, 'right');
             this.pt_text.moveTo(-100, 150);
             this.addChild(this.pt_text);
 
