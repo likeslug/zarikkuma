@@ -44,6 +44,7 @@ window.onload = function() {
     const IMG_ZARI1 = 'image/zarigani1(140x117).png';
     const IMG_ZARI2 = 'image/zarigani2(148x126).png';
     const IMG_ZARI3 = 'image/zarigani3(115x110).png';
+    const IMG_ZARI4 = 'image/zarigami4(127x95).png';
     const IMG_MAMEINC_BALLOON = 'image/mame_inc_balloon.png';
     const IMG_MAMEINC_TEXT = 'image/mame_inc_text.png';
     const IMG_TAIRYO_TAI = 'image/textimg_tairyo(tai).png';
@@ -64,7 +65,7 @@ window.onload = function() {
     game.preload([IMG_ROD]);
     game.preload([IMG_STRING, IMG_CURVED_STRING]);
     game.preload([IMG_MAME]);
-    game.preload([IMG_ZARI0, IMG_ZARI1, IMG_ZARI2, IMG_ZARI3]);
+    game.preload([IMG_ZARI0, IMG_ZARI1, IMG_ZARI2, IMG_ZARI3, IMG_ZARI4]);
     game.preload([IMG_MAMEINC_BALLOON, IMG_MAMEINC_TEXT]);
     game.preload([IMG_TAIRYO_TAI, IMG_TAIRYO_RYO]);
     game.preload([IMG_RESULT_FRAME]);
@@ -249,10 +250,11 @@ window.onload = function() {
                                 if(living_zari_count < MIN_ZARIGANI_COUNT || Math.random() <= 1 / ZARI_GENERATE_RATE)
                                 {
                                     let zari_gen_weight = [];
-                                    zari_gen_weight[0] = (remain_sec > 25)? 1 : 0;
-                                    zari_gen_weight[1] = (remain_sec <= 25)? 1 : 0;
-                                    zari_gen_weight[2] = (remain_sec <= 20)? 1 : 0;
-                                    zari_gen_weight[3] = (remain_sec <= 15)? 2 : 0;
+                                    zari_gen_weight[0] = (remain_sec > 25)? 2 : 0;
+                                    zari_gen_weight[1] = (remain_sec <= 25)? 2 : 0;
+                                    zari_gen_weight[2] = (remain_sec <= 20)? 2 : 0;
+                                    zari_gen_weight[3] = (remain_sec <= 15)? 4 : 0;
+                                    zari_gen_weight[4] = (remain_sec <= 15)? 1 : 0;
                                     let total_weight = 0;
                                     for (const w of zari_gen_weight) { total_weight += w; }
 
@@ -283,6 +285,10 @@ window.onload = function() {
                                         case 3:
                                             zari_entity = new Zari3();
                                             zari_entity.moveTo(-zari_entity.width, WAVE_Y + Math.random() * (GAME_HEIGHT - WAVE_Y - zari_entity.height));
+                                            break;
+                                        case 4:
+                                            zari_entity = new Zari4();
+                                            zari_entity.moveTo(-zari_entity.width, GAME_HEIGHT - zari_entity.height + 5);
                                             break;
                                     }
                                     this.insertBefore(zari_entity, this.wave);
@@ -622,6 +628,20 @@ window.onload = function() {
     var Zari3 = Class.create(ZariBase,{
         initialize: function(){
             ZariBase.call(this, 115, 110, IMG_ZARI3, 79, 53, 15, 50000);
+        }
+    });
+    var Zari4 = Class.create(ZariBase,{
+        initialize: function(){
+            ZariBase.call(this, 127, 95, IMG_ZARI4, 107, 50, 30, 100000);
+        },
+        onenterframe: function(){
+            if(this.active){
+                this.x += this.direction * this.abs_speedX;
+                if(this.x >= GAME_WIDTH)
+                {
+                    this.parentNode.removeChild(this);
+                }
+            }
         }
     });
 
