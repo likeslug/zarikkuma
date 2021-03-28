@@ -44,7 +44,7 @@ window.onload = function() {
     const IMG_ZARI1 = 'image/zarigani1(140x117).png';
     const IMG_ZARI2 = 'image/zarigani2(148x126).png';
     const IMG_ZARI3 = 'image/zarigani3(115x110).png';
-    const IMG_ZARI4 = 'image/zarigami4(127x95).png';
+    const IMG_ZARI4 = 'image/zarigami4(95x127).png';
     const IMG_MAMEINC_BALLOON = 'image/mame_inc_balloon.png';
     const IMG_MAMEINC_TEXT = 'image/mame_inc_text.png';
     const IMG_TAIRYO_TAI = 'image/textimg_tairyo(tai).png';
@@ -567,7 +567,7 @@ window.onload = function() {
         attachZari: function(zari){
             zari.scaleX = 1;
             zari.scaleY = 1;
-            zari.rotation = -45;
+            zari.rotation = -45 - zari.bodyAngle;
             zari.moveTo(12 - zari.originX, 10 - zari.originY);
             this.insertBefore(zari, this.mamebody);
             this.having_zari = zari;
@@ -581,11 +581,12 @@ window.onload = function() {
     });
 
     var ZariBase = Class.create(Sprite,{
-        initialize: function(width, height, image, originX, originY, speedX, point){
+        initialize: function(width, height, image, originX, originY, bodyAngle, speedX, point){
             Sprite.call(this, width, height);
             this.image = game.assets[image];
             this.originX = originX;
             this.originY = originY;
+            this.bodyAngle = bodyAngle;
             this.abs_speedX = speedX;
             this.direction = 1;
             this.frame = (Array(4).fill(0)).concat(Array(4).fill(1));
@@ -612,27 +613,27 @@ window.onload = function() {
     });
     var Zari0 = Class.create(ZariBase,{
         initialize: function(){
-            ZariBase.call(this, 121, 91, IMG_ZARI0, 78, 29, 5, 1000);
+            ZariBase.call(this, 121, 91, IMG_ZARI0, 78, 29, -15, 5, 1000);
         }
     });
     var Zari1 = Class.create(ZariBase,{
         initialize: function(){
-            ZariBase.call(this, 140, 117, IMG_ZARI1, 105, 40, 12, 5000);
+            ZariBase.call(this, 140, 117, IMG_ZARI1, 105, 40, 0, 12, 5000);
         }
     });
     var Zari2 = Class.create(ZariBase,{
         initialize: function(){
-            ZariBase.call(this, 148, 126, IMG_ZARI2, 97, 52, 5, 10000);
+            ZariBase.call(this, 148, 126, IMG_ZARI2, 97, 52, -30, 5, 10000);
         }
     });
     var Zari3 = Class.create(ZariBase,{
         initialize: function(){
-            ZariBase.call(this, 115, 110, IMG_ZARI3, 79, 53, 15, 50000);
+            ZariBase.call(this, 115, 110, IMG_ZARI3, 79, 53, 0, 15, 50000);
         }
     });
     var Zari4 = Class.create(ZariBase,{
         initialize: function(){
-            ZariBase.call(this, 127, 95, IMG_ZARI4, 107, 50, 30, 100000);
+            ZariBase.call(this, 95, 127, IMG_ZARI4, 50, 20, -90, 30, 100000);
         },
         onenterframe: function(){
             if(this.active){
