@@ -55,8 +55,8 @@ window.onload = function() {
     const IMG_VE = 'image/ve_balloon.png';
 
     var game = new Core(GAME_WIDTH, GAME_HEIGHT);
-	game.fps = GAME_FPS;
-	game.rootScene.backgroundColor = '#ffffff';
+    game.fps = GAME_FPS;
+    game.rootScene.backgroundColor = '#ffffff';
     game.preload(IMG_TEST);
     game.preload([IMG_BACKGROUND]);
     game.preload([IMG_TITLE]);
@@ -91,7 +91,7 @@ window.onload = function() {
 
             let title = new Sprite(560, 178);
             title.image = game.assets[IMG_TITLE];
-			title.moveTo((GAME_WIDTH - title.width) / 2, (GAME_HEIGHT - title.height) / 2);
+            title.moveTo((GAME_WIDTH - title.width) / 2, (GAME_HEIGHT - title.height) / 2);
             this.addChild(title);
 
             let ankimo = new Ankimo();
@@ -105,9 +105,9 @@ window.onload = function() {
             this.addChild(message);
 
         },
-		ontouchend: function(param){
-			game.replaceScene(new GameScene());
-		},
+        ontouchend: function(param){
+            game.replaceScene(new GameScene());
+        },
     });
 
     var GameScene = Class.create(Scene,{
@@ -203,7 +203,7 @@ window.onload = function() {
             }
             this.wave.setNormal();
         },
-		ontouchend: function(param){
+        ontouchend: function(param){
             if(this.state == GameScene.STATE.PLAYING)
             {
                 this.ankimo.fishup();
@@ -216,7 +216,7 @@ window.onload = function() {
                 }
                 game.replaceScene(new TitleScene());
             }
-		},
+        },
         onenterframe: function(){
             switch (this.state) {
                 case GameScene.STATE.OPENING:
@@ -601,7 +601,6 @@ window.onload = function() {
         },
         onenterframe: function(){
             if(this.active){
-                let direction = 1;
                 if(this.x + this.width / 2 <= 0 && this.direction < 0){
                     this.direction = 1;
                     this.scaleX = 1;
@@ -939,28 +938,28 @@ window.onload = function() {
         },
     });
 
-	function resizeStage() {
-		var core = enchant.Core.instance;
-		core.scale = Math.min(window.innerWidth / GAME_WIDTH, window.innerHeight / GAME_HEIGHT);
-		var stagePos = {
-			top: (window.innerHeight - (core.height * core.scale)) / 2,
-			left: (window.innerWidth - (core.width * core.scale)) / 2,
-		};
-		var stage = document.getElementById('enchant-stage');
-		stage.style.position = 'absolute';
-		stage.style.top = stagePos.top + 'px';
-		stage.style.left = stagePos.left + 'px';
-		core._pageX = stagePos.left;
-		core._pageY = stagePos.top;
-	}
-	window.onresize = function() {
-		resizeStage();
-	};
+    function resizeStage() {
+        var core = enchant.Core.instance;
+        core.scale = Math.min(window.innerWidth / GAME_WIDTH, window.innerHeight / GAME_HEIGHT);
+        var stagePos = {
+            top: (window.innerHeight - (core.height * core.scale)) / 2,
+            left: (window.innerWidth - (core.width * core.scale)) / 2,
+        };
+        var stage = document.getElementById('enchant-stage');
+        stage.style.position = 'absolute';
+        stage.style.top = stagePos.top + 'px';
+        stage.style.left = stagePos.left + 'px';
+        core._pageX = stagePos.left;
+        core._pageY = stagePos.top;
+    }
+    window.onresize = function() {
+        resizeStage();
+    };
     resizeStage();
     
     game.onload = function() {
-		var titleScene = new TitleScene();
-		game.pushScene(titleScene);
+        var titleScene = new TitleScene();
+        game.pushScene(titleScene);
     };
     game.start();
 };
