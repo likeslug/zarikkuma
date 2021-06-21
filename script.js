@@ -45,7 +45,7 @@ window.onload = function() {
     const IMG_ZARI2 = 'image/zarigani2(148x126).png';
     const IMG_ZARI3 = 'image/zarigani3(115x110).png';
     const IMG_ZARI4 = 'image/zarigani4(95x127).png';
-    const IMG_ZARI5 = 'image/zarigani5.png';
+    const IMG_ZARI5 = 'image/zarigani5(124x130).png';
     const IMG_MAMEINC_BALLOON = 'image/mame_inc_balloon.png';
     const IMG_MAMEINC_TEXT = 'image/mame_inc_text.png';
     const IMG_TAIRYO_TAI = 'image/textimg_tairyo(tai).png';
@@ -294,7 +294,7 @@ window.onload = function() {
                                             break;
                                         case 5:
                                             zari_entity = new Zari5();
-                                            zari_entity.moveTo(-zari_entity.width, WAVE_Y + Math.random() * (GAME_HEIGHT - WAVE_Y - zari_entity.height));
+                                            zari_entity.moveTo(-zari_entity.width, WAVE_Y + Math.random() * (GAME_HEIGHT - WAVE_Y - zari_entity.height - 30));
                                             break;
                                     }
                                     this.insertBefore(zari_entity, this.wave);
@@ -652,23 +652,23 @@ window.onload = function() {
     });
     var Zari5 = Class.create(ZariBase,{
         initialize: function(){
-            ZariBase.call(this, 124, 130, IMG_ZARI5, 85, 18, -65, 0, 60000);
-            this.frame = 0;
-            this.appearance_times = 0;
-            for(let i = 0; i < 4; i++)
-            {
-                let d = (i % 2? -1 : 1);
-                const MOVE_WIDTH = 100;
-                const x_min = (d > 0? 0 : this.width - 2 * this.originX + MOVE_WIDTH);
-                const x_max = (d > 0? GAME_WIDTH - this.width - MOVE_WIDTH : GAME_WIDTH - 2 * this.originX);
-                
-                let start_x = x_min + Math.random() * (x_max - x_min);
-                this.tl.scaleTo(d, this.scaleY, 1).and().moveX(start_x, 1).moveX(start_x + d * MOVE_WIDTH, 5, enchant.Easing.QUAD_EASEOUT).then(function(){ this.appearance_times++; });
-            }
+            ZariBase.call(this, 124, 130, IMG_ZARI5, 85, 18, -65, 15, 60000);
+            this.y0 = 0;
+        },
+        moveTo: function(x, y){
+            ZariBase.prototype.moveTo.call(this, x, y);
+            this.age0 = this.age;
+            this.y0 = y;
         },
         onenterframe: function(){
-            if(!this.active) this.tl.pause().and().clear();
-            if(this.active && this.appearance_times >= 4) this.parentNode.removeChild(this);
+            if(this.active){
+                this.x += this.direction * this.abs_speedX;
+                this.y = this.y0 + 30 * Math.sin((this.age - this.age0) * Math.PI / 10);
+                if(this.x >= GAME_WIDTH)
+                {
+                    this.parentNode.removeChild(this);
+                }
+            }
         }
     });
 
