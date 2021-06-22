@@ -644,7 +644,7 @@ window.onload = function() {
     });
     var Zari4 = Class.create(ZariBase,{
         initialize: function(){
-            ZariBase.call(this, 95, 127, IMG_ZARI4, 50, 20, -90, 30, 100000);
+            ZariBase.call(this, 95, 127, IMG_ZARI4, 50, 20, -90, 30, 80000);
         },
         onenterframe: function(){
             if(this.active){
