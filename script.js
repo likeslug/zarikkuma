@@ -701,7 +701,7 @@ window.onload = function() {
                         this.x = stop_x;
                         if(Math.random() < 0.02)
                         {
-                            if(this.bite_count >= 2)
+                            if(this.bite_count >= 2 || Math.random() < 0.5)
                             {
                                 this.status = 3;
                             }
@@ -725,7 +725,7 @@ window.onload = function() {
             }
         },
         fish: function(){
-            this.tl.pause();
+            this.tl.clear();
             this.frame = 2;
             this.active = false;
         }
