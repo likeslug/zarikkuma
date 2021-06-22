@@ -46,6 +46,7 @@ window.onload = function() {
     const IMG_ZARI3 = 'image/zarigani3(115x110).png';
     const IMG_ZARI4 = 'image/zarigani4(95x127).png';
     const IMG_ZARI5 = 'image/zarigani5(124x130).png';
+    const IMG_ZARI6 = 'image/zarigani6(90x90).png'
     const IMG_MAMEINC_BALLOON = 'image/mame_inc_balloon.png';
     const IMG_MAMEINC_TEXT = 'image/mame_inc_text.png';
     const IMG_TAIRYO_TAI = 'image/textimg_tairyo(tai).png';
@@ -66,7 +67,7 @@ window.onload = function() {
     game.preload([IMG_ROD]);
     game.preload([IMG_STRING, IMG_CURVED_STRING]);
     game.preload([IMG_MAME]);
-    game.preload([IMG_ZARI0, IMG_ZARI1, IMG_ZARI2, IMG_ZARI3, IMG_ZARI4, IMG_ZARI5]);
+    game.preload([IMG_ZARI0, IMG_ZARI1, IMG_ZARI2, IMG_ZARI3, IMG_ZARI4, IMG_ZARI5, IMG_ZARI6]);
     game.preload([IMG_MAMEINC_BALLOON, IMG_MAMEINC_TEXT]);
     game.preload([IMG_TAIRYO_TAI, IMG_TAIRYO_RYO]);
     game.preload([IMG_RESULT_FRAME]);
@@ -257,6 +258,7 @@ window.onload = function() {
                                     zari_gen_weight[3] = (remain_sec <= 15)? 4 : 0;
                                     zari_gen_weight[4] = (remain_sec <= 15)? 1 : 0;
                                     zari_gen_weight[5] = (remain_sec <= 15)? 1 : 0;
+                                    zari_gen_weight[6] = (remain_sec <= 15)? 1 : 0;
                                     let total_weight = 0;
                                     for (const w of zari_gen_weight) { total_weight += w; }
 
@@ -295,6 +297,10 @@ window.onload = function() {
                                         case 5:
                                             zari_entity = new Zari5();
                                             zari_entity.moveTo(-zari_entity.width, WAVE_Y + Math.random() * (GAME_HEIGHT - WAVE_Y - zari_entity.height - 30));
+                                            break;
+                                        case 6:
+                                            zari_entity = new Zari6();
+                                            zari_entity.moveTo(-zari_entity.width, WAVE_Y + Math.random() * (GAME_HEIGHT - WAVE_Y - zari_entity.height));
                                             break;
                                     }
                                     this.insertBefore(zari_entity, this.wave);
@@ -669,6 +675,59 @@ window.onload = function() {
                     this.parentNode.removeChild(this);
                 }
             }
+        }
+    });
+    var Zari6 = Class.create(ZariBase,{
+        initialize: function(){
+            ZariBase.call(this, 90, 90, IMG_ZARI6, 70, 34, -50, 5, 100000);
+            this.status = 0;
+            this.bite_count = 0;
+        },
+        onenterframe: function(){
+            if(this.active){
+                const STRING_X = 250;
+                stop_x = STRING_X - this.width / 2 - 60;
+                bite_x = STRING_X - this.width / 2;
+                switch(this.status)
+                {
+                    case 0: // entry 
+                        this.frame = 0;
+                        this.x += this.direction * this.abs_speedX;
+                        if(this.x >= stop_x) { this.x = stop_x; this.status = 1; }
+                        break;
+                    case 1: // bite_ready 
+                    default:
+                        this.frame = 1;
+                        this.x = stop_x;
+                        if(Math.random() < 0.02)
+                        {
+                            if(this.bite_count >= 2)
+                            {
+                                this.status = 3;
+                            }
+                            else
+                            {
+                                this.status = 2;
+                                this.bite_count++;
+                                this.tl.moveTo(bite_x, this.y, 5, enchant.Easing.QUAD_EASEIN).moveTo(stop_x, this.y, 5, enchant.Easing.QUAD_EASEOUT).then(function(){this.status = 1});
+                            }
+                        }
+                        break;
+                    case 2: // biting 
+                        break;
+                    case 3: // escaping 
+                        this.frame = 0;
+                        this.x += this.direction * this.abs_speedX * 10;
+                        break;
+                }
+                
+                if(this.x >= GAME_WIDTH) this.parentNode.removeChild(this);
+            }
+        },
+        fish: function(){
+            this.tl.pause();
+            this.frame = 2;
+            this.active = false;
         }
     });
 
